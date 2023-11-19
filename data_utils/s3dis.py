@@ -23,13 +23,10 @@ class S3DIS():
                          'bookcase':    [10,  200, 100],
                          'board':       [200, 200, 200],
                          'clutter':     [50,  50,  50 ]} 
-        
-    def is_available(self):
-        return True
     
 
 class PrepareDataset():
-    def __init__(self, original_dir, dataset_dir, file_type='npy') -> None:
+    def __init__(self, original_dir, dataset_dir, file_type) -> None:
         self.original_dir = original_dir
         self.dataset_dir = dataset_dir
         self.file_type = file_type
@@ -73,6 +70,9 @@ class PrepareDataset():
                 np.save(os.path.join(self.dataset_dir, output_filename + '.npy'), data_label)
             elif self.file_type == 'txt':
                 np.savetxt(os.path.join(self.dataset_dir, output_filename + '.txt'), data_label, fmt='%f %f %f %d %d %d %d')
+        
+    def is_available(self):
+        return True
 
 
 if __name__ == "__main__":
