@@ -14,5 +14,7 @@
 > sh tools/data_prepare.sh s3dis DATASET_ROOT_DIR DATASET_TARGET_DIR DATASET_FILETYPE(default npy)
 
 ## 参考代码
+
 [Pointcept](https://github.com/Pointcept/Pointcept)
+
 [point-transformer](https://github.com/POSTECH-CVLab/point-transformer/tree/master)
