@@ -11,7 +11,7 @@
 **请注意：**该版本的S3DIS数据集中存在一出特殊字符，请在解压后将`Area_5\hallway_6\Annotations\ceiling_1.txt`中第**180389**行数字**185**后的特殊字符修改为空格
 
 然后运行以下代码：
-> sh tools/data_prepare.sh s3dis DATASET_ROOT_DIR DATASET_TARGET_DIR DATASET_FILETYPE(default npy)
+> sh tools/data_prepare.sh s3dis DATASET_ROOT_DIR DATASET_TARGET_DIR
 
 ## 参考代码
 

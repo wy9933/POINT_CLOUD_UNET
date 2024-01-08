@@ -30,10 +30,9 @@ class S3DIS():
     
 
 class PrepareDataset():
-    def __init__(self, original_dir, dataset_dir, file_type) -> None:
+    def __init__(self, original_dir, dataset_dir) -> None:
         self.original_dir = original_dir
         self.dataset_dir = dataset_dir
-        self.file_type = file_type
         self.s3dis = S3DIS()
 
     def prepare(self) -> None:
@@ -48,11 +47,6 @@ class PrepareDataset():
         scene_list = glob.glob(os.path.join(self.original_dir, '*/*'))
         if len(scene_list) != scene_num:
             raise Exception('The number of scenes in S3DIS dataset is incorrect (have {} scenes, should have {} scenes), please check the dataset integrity'.format(len(scene_list), scene_num))
-
-        # check data file type
-        legal_types = ['npy', 'txt']
-        if self.file_type not in legal_types:
-            raise Exception('Output file type \'{}\' not supported, please choose a type in: {}.'.format(self.file_type, ', '.join(legal_types)))
         
         # prepare dataset
         for scene in tqdm.tqdm(glob.glob(os.path.join(self.original_dir, '*/*'))):
@@ -76,10 +70,7 @@ class PrepareDataset():
             # save data
             os.makedirs(self.dataset_dir, exist_ok=True)
             output_filename = area_name + "_" + scene_name
-            if self.file_type == 'npy':
-                np.save(os.path.join(self.dataset_dir, output_filename + '.npy'), data_label)
-            elif self.file_type == 'txt':
-                np.savetxt(os.path.join(self.dataset_dir, output_filename + '.txt'), data_label, fmt='%f %f %f %d %d %d %d')
+            np.save(os.path.join(self.dataset_dir, output_filename + '.npy'), data_label)
         
     def is_available(self):
         return True
@@ -107,7 +98,7 @@ class S3DISDataset(Dataset):
         if self.load_mode == 'voxel':
             from data_utils.load_voxel_mode import data_prepare
             data_path = os.path.join(self.data_root, self.data_list[idx] + '.' + self.cfg.file_type)
-            raw_data = load_data(data_path)
+            raw_data = np.load(data_path)
             coord, feat, label = raw_data[:, 0:3], raw_data[:, 3:6], raw_data[:, 6]
             coord, feat, label = data_prepare(coord, feat, label, self.split, self.cfg.voxel_size, self.cfg.voxel_max, self.cfg.transform, self.cfg.shuffle_index)
         else:
